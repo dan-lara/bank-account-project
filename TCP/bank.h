@@ -58,14 +58,16 @@ typedef struct Compte_t {
 
 typedef struct Client_t {
     char name[BUF_SIZE];       //nom du client 
-    SOCKET sock;               //socket du client
+    SOCKET socket;               //socket du client
     struct sockaddr_in addr;   //adresse du socket client
      
 }Client;
 
-static void disconnect(SOCKET sock);
+static int read(SOCKET socket, char *buffer);
+static void write(SOCKET socket, const char *buffer);
 
-static int read(SOCKET sock, char *buffer);
-static void write(SOCKET sock, const char *buffer);
+static void disconnect(SOCKET socket);
+
+void get_time_now(char *buffer, size_t buffer_size);
 
 #endif
