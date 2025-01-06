@@ -1,0 +1,4 @@
+AJOUT DanielLara 00556789  mdpDaniel 15320
+RETRAIT DanielLara 00556789 mdpDaniel 3900
+SOLDE DanielLara 00556789 mdpDaniel
+OPERATIONS DanielLara 00556789 mdpDaniel
