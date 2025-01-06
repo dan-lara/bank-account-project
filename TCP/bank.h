@@ -1,6 +1,5 @@
 #ifndef BANK_H
 #define BANK_H
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,6 +9,7 @@
 
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/select.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h> /* close */
@@ -24,7 +24,8 @@ typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 
 #define MAX_CLIENTS     100
-#define BUF_SIZE        100
+#define MAX_OPERATIONS  10
+#define BUF_SIZE        1024
 #define PORT            1234
 
 typedef enum {
@@ -49,25 +50,25 @@ typedef struct Operation_t {
 
 typedef struct Compte_t {
     char id_client[BUF_SIZE];   //nom d'utilisateur
-    char id_compte[10];         //numero de compte bancaire (XXX.XXX-XX)
+    char id_compte[10];         //numero de compte bancaire (XXX.XXX.XX)
     char password[BUF_SIZE];    //mot de passe
-    int solde;
-    int num_operations;
-    Operation last_operations[10];
+    int solde;                //solde du compte bancaire
+    Operation last_operations[10]; //Tableau stockant les 10 dernieres operations
+    int num_operations;          //Nombre d'operations effectuées
 }Compte;
 
 typedef struct Client_t {
     char name[BUF_SIZE];       //nom du client 
-    SOCKET socket;               //socket du client
+    SOCKET _socket;               //socket du client
     struct sockaddr_in addr;   //adresse du socket client
      
 }Client;
 
-static int read(SOCKET socket, char *buffer);
-static void write(SOCKET socket, const char *buffer);
+static int read_socket(SOCKET _socket, char *buffer);
+static void write_socket(SOCKET _socket, const char *buffer);
 
-static void disconnect(SOCKET socket);
+static void disconnect_socket(SOCKET _socket);
 
-void get_time_now(char *buffer, size_t buffer_size);
+void get_time_now(char *buffer);
 
 #endif
