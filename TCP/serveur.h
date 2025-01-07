@@ -17,6 +17,8 @@ static void remove_client(Client *clients, int to_remove, int *num_clients);
 static void clear_clients(Client *clients, int num_clients);
 
 static void handle_command(Client *client, Compte *comptes, int num_comptes, const char *command, int check_origin);
+void add_operation(Compte *comptes, int index, char *type_operation, int value);
+static int compare_compte(Compte c1, Compte c2);
 
 static void run_server(Compte *comptes, int num_comptes);
 
