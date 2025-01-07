@@ -62,8 +62,8 @@ purger: nettoyer
 # Recompilation complète
 redo: purger tout
 
-# Affichage de l'aide
-aide:
+# Affichage de l'help
+help:
 	@echo "📚 Guide d'utilisation du Makefile:"
 	@echo "  make ou make tout    → Compile tout le projet"
 	@echo "  make client         → Compile uniquement le client"
@@ -71,7 +71,7 @@ aide:
 	@echo "  make nettoyer       → Supprime les fichiers objets"
 	@echo "  make purger         → Supprime tout (objets et programmes)"
 	@echo "  make redo    → Recompile tout depuis zéro"
-	@echo "  make aide           → Affiche ce message"
+	@echo "  make help           → Affiche ce message"
 
 # Déclarer les cibles qui ne sont pas des fichiers
-.PHONY: tout message_debut message_fin nettoyer purger redo aide
+.PHONY: tout message_debut message_fin nettoyer purger redo help
