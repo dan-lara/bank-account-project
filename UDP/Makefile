@@ -24,7 +24,7 @@ tout: message_debut $(PROGRAMMES) message_fin
 
 # Message de début de compilation
 message_debut:
-	@echo "🚀 Démarrage de la compilation du TCP..."
+	@echo "🚀 Démarrage de la compilation du UDP..."
 
 # Message de fin de compilation
 message_fin:
