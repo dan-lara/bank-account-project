@@ -103,7 +103,7 @@ void add_operation(Compte *comptes, int index, char *type_operation, int value)
     return;
 }
 
-static void handle_command(Client *client, Compte *comptes, int num_comptes, const char *command)
+static void handle_command(Client *client, Compte *comptes, int num_comptes, const char *command, int check_origin)
 {
     char op_request[10];
     Compte c_compte;
@@ -111,14 +111,32 @@ static void handle_command(Client *client, Compte *comptes, int num_comptes, con
 
     sscanf(command, "%s  %s  %s  %s  %d", op_request, c_compte.id_client, c_compte.id_compte, c_compte.password, &value);
     printf("[<] Commande %s reçue de : %s\n", op_request, client->name);
-    int i;
 
-    if (!strcmp(op_request, "AJOUT"))
-    {
-        for (int i = 0; i < num_comptes; i++)
-            if (compare_compte(comptes[i], c_compte))
+    if(check_origin){
+        int j;
+        for (j = 0; j < num_comptes; j++)
+            if (strcmp(comptes[j].id_client, client->name)==0)//Decouvrir la compte du client
+                break;
+
+        int i;
+        for ( i = 0; i < num_comptes; i++)
+            if (compare_compte(comptes[i], c_compte)) //Decouvrir la compte demandée
+                break;
+
+        if(strcmp(comptes[j].id_client, comptes[i].id_client) != 0){
+            // printf("Mauvais : %s et %s\n\n", comptes[j].id_client, comptes[i].id_client);
+            write_client(client->_socket, "KO\n");
+            printf("[-] Client n'est pas autorisé\n");
+            return;
+        }
+        // else
+            // printf("Trouvé : %s et %s\n\n", comptes[j].id_client, comptes[i].id_client);
+    }
+
+    for (int i = 0; i < num_comptes; i++)
+        if (compare_compte(comptes[i], c_compte))
+            if (!strcmp(op_request, "AJOUT"))
             {
-
                 comptes[i].solde += value;
 
                 add_operation(comptes, i, "AJOUT", value);
@@ -128,11 +146,7 @@ static void handle_command(Client *client, Compte *comptes, int num_comptes, con
                 printf("[+] AJOUT réussi d'une valeur de : %d.%d€, compte : %s\n", value / 100, value % 100, c_compte.id_compte);
                 return;
             }
-    }
-    else if (!strcmp(op_request, "RETRAIT"))
-    {
-        for (int i = 0; i < num_comptes; i++)
-            if (compare_compte(comptes[i], c_compte))
+            else if (!strcmp(op_request, "RETRAIT"))
             {
                 if (comptes[i].solde >= value)
                 {
@@ -152,13 +166,8 @@ static void handle_command(Client *client, Compte *comptes, int num_comptes, con
                 }
                 return;
             }
-    }
-    else if (!strcmp(op_request, "SOLDE"))
-    {
-        for (int i = 0; i < num_comptes; i++)
-            if (compare_compte(comptes[i], c_compte))
+            else if (!strcmp(op_request, "SOLDE"))
             {
-
                 char last_operation[50];
 
                 if (comptes[i].num_operations > 0)
@@ -172,11 +181,7 @@ static void handle_command(Client *client, Compte *comptes, int num_comptes, con
                 printf("[+] SOLDE consulté : %d.%d€, compte : %s\n", comptes[i].solde / 100, comptes[i].solde % 100, c_compte.id_compte);
                 return;
             }
-    }
-    else if (!strcmp(op_request, "OPERATIONS"))
-    {
-        for (int i = 0; i < num_comptes; i++)
-            if (compare_compte(comptes[i], c_compte))
+            else if (!strcmp(op_request, "OPERATIONS"))
             {
                 char operations[BUF_SIZE] = "RES_OPERATIONS\n";
                 for (int j = 0; j < comptes[i].num_operations; j++)
@@ -189,7 +194,6 @@ static void handle_command(Client *client, Compte *comptes, int num_comptes, con
                 printf("[+] OPERATIONS consultées : %d envoyées pour le compte : %s\n", c_compte.num_operations, c_compte.id_compte);
                 return;
             }
-    }
 
     write_client(client->_socket, "KO\n");
     printf("[-] Erreur sur l'authentication\n");
@@ -217,9 +221,8 @@ static void run_server(Compte *comptes, int num_comptes)
         FD_SET(STDIN_FILENO, &rdfs);
         FD_SET(_socket, &rdfs);
         
-        for (int i = 0; i < num_clients; i++) {
+        for (int i = 0; i < num_clients; i++)
             FD_SET(clients[i]._socket, &rdfs);
-        }
 
         if (select(max + 1, &rdfs, NULL, NULL, NULL) == INVALID_SOCKET)
         {
@@ -295,9 +298,7 @@ static void run_server(Compte *comptes, int num_comptes)
                         broadcast_message(clients, client, buffer, num_clients, 1);
                     }
                     else
-                    {
-                        handle_command(&clients[j], comptes, num_comptes, buffer);
-                    }
+                        handle_command(&clients[j], comptes, num_comptes, buffer, CHECK_ORIGIN);
                     break;
                 }
             }

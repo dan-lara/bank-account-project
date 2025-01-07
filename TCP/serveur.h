@@ -4,6 +4,8 @@
 #include "bank.h"
 #include "bank.c"
 
+#define CHECK_ORIGIN 1
+
 static SOCKET server_connect(void);
 static void server_disconnect(SOCKET _socket);
 
@@ -14,7 +16,7 @@ static void broadcast_message(Client *clients, Client origin, const char *buffer
 static void remove_client(Client *clients, int to_remove, int *num_clients);
 static void clear_clients(Client *clients, int num_clients);
 
-static void handle_command(Client *client, Compte *comptes, int num_comptes, const char *command);
+static void handle_command(Client *client, Compte *comptes, int num_comptes, const char *command, int check_origin);
 
 static void run_server(Compte *comptes, int num_comptes);
 
