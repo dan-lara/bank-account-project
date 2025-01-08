@@ -2,3 +2,8 @@ AJOUT DanielLara 00556789  mdpDaniel 15320
 RETRAIT DanielLara 00556789 mdpDaniel 3900
 SOLDE DanielLara 00556789 mdpDaniel
 OPERATIONS DanielLara 00556789 mdpDaniel
+
+AJOUT JeanDupont 00112345  mdpJean 10010
+RETRAIT JeanDupont 00112345 mdpJean 500000
+SOLDE JeanDupont 00112345 mdpJean
+OPERATIONS JeanDupont 00112345 mdpJean
