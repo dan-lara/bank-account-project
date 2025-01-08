@@ -7,3 +7,18 @@ AJOUT JeanDupont 00112345  mdpJean 10010
 RETRAIT JeanDupont 00112345 mdpJean 500000
 SOLDE JeanDupont 00112345 mdpJean
 OPERATIONS JeanDupont 00112345 mdpJean
+
+AJOUT MarieCurie 00223456 mdpMarie 200000
+RETRAIT MarieCurie 00223456 mdpMarie 50000
+SOLDE MarieCurie 00223456 mdpMarie
+OPERATIONS MarieCurie 00223456 mdpMarie
+
+AJOUT PierreDurand 00334567 mdpPierre 300000
+RETRAIT PierreDurand 00334567 mdpPierre 100000
+SOLDE PierreDurand 00334567 mdpPierre
+OPERATIONS PierreDurand 00334567 mdpPierre
+
+AJOUT LucieMartin 00445678 mdpLucie 100000
+RETRAIT LucieMartin 00445678 mdpLucie 50000
+SOLDE LucieMartin 00445678 mdpLucie
+OPERATIONS LucieMartin 00445678 mdpLucie
