@@ -4,7 +4,7 @@
 #include "bank.h"
 #include "bank.c"
 
-#define CHECK_ORIGIN 0
+#define CHECK_ORIGIN 1
 
 static SOCKET server_connect(void);
 static void server_disconnect(SOCKET _socket);

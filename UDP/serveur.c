@@ -264,7 +264,7 @@ static void run_server(Compte *comptes, int num_comptes)
 
                 Client c = {"", 0, c_addr};
                 strncpy(c.name, buffer, BUF_SIZE - 1);
-                printf("BUFFER   =%s\n\n",c.name);
+                // printf("BUFFER   =%s\n\n",c.name);
                 clients[num_clients] = c;
                 num_clients++;
 
